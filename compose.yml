@@ -1,0 +1,42 @@
+services:
+  php:
+    container_name: ctt-php
+    build: .docker/php
+    image: ctt/php
+    user: docker
+    ports:
+      - "8080:80"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - .docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - .docker/php/custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini
+      - .:/usr/src/app
+    environment:
+      PHP_IDE_CONFIG: "serverName=docker-ctt-php"
+    networks: [app]
+  composer:
+    container_name: ctt-composer
+    image: composer
+    user: 1000:1000
+    volumes:
+      - .:/app
+    command: install
+  postgres:
+    container_name: ctt-postgres
+    image: postgres:alpine
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    #      volumes:
+    #          - .docker/postgres/pagila-schema.sql:/docker-entrypoint-initdb.d/1-pagila-schema.sql
+    #          - .docker/postgres/pagila-data.sql:/docker-entrypoint-initdb.d/2-pagila-data.sql
+    hostname: db
+    networks: [app]
+
+networks:
+  app:
+    driver: bridge
