@@ -15,6 +15,7 @@ services:
     environment:
       PHP_IDE_CONFIG: "serverName=docker-ctt-php"
     networks: [app]
+    entrypoint: "php artisan octane:frankenphp --workers=1 --watch"
   composer:
     container_name: ctt-composer
     image: composer

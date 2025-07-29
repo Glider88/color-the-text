@@ -21,9 +21,9 @@ RUN \
   # Give write access to /data/caddy and /config/caddy
   chown -R ${USER}:${USER} /data/caddy && chown -R ${USER}:${USER} /config/caddy
 
-# add /config/psysh for laravel tinker
+# add /config/psysh/ for laravel tinker
 RUN mkdir /config/psysh && chown -R ${USER}:${USER} /config/psysh
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
-ENTRYPOINT ["php", "artisan", "octane:frankenphp", "--workers", "1", "--watch"]
+#ENTRYPOINT ["php", "artisan", "octane:frankenphp", "--workers", "1", "--watch"]
