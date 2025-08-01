@@ -221,4 +221,10 @@ return [
 
     'max_execution_time' => 30,
 
+    'mercure' => [
+        'publisher_jwt' => 'PUBLISHER_TOKEN', # Publisher JWT key
+        'subscriber_jwt' => 'SUB_TOKEN', # Subscriber JWT key
+        'anonymous' => true,
+    ],
+
 ];

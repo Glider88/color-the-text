@@ -15,7 +15,8 @@ services:
     environment:
       PHP_IDE_CONFIG: "serverName=docker-ctt-php"
     networks: [app]
-    entrypoint: "php artisan octane:frankenphp --workers=1 --watch"
+#    entrypoint: "tail -f /dev/null"
+    entrypoint: "php artisan octane:frankenphp --caddyfile .docker/php/Caddyfile --workers=1 --watch"
   composer:
     container_name: ctt-composer
     image: composer
