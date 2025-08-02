@@ -1,5 +1,5 @@
 <html>
     <body>
-        <h1>Lab</h1>
+        <h1>Count: {{ $a }}</h1>
     </body>
 </html>

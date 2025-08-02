@@ -6,11 +6,21 @@ use Illuminate\View\View;
 
 class LabController extends Controller
 {
-    public function index(): View
+    public function count(): View
     {
         A::$a += 1;
 
-        return view('lab', ['a' => A::$a]);
+        return view('count', ['a' => A::$a]);
+    }
+
+    public function lab(): View
+    {
+        return view('lab');
+    }
+
+    public function ping()
+    {
+        return response()->json([]);
     }
 }
 
