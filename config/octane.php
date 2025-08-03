@@ -222,9 +222,11 @@ return [
     'max_execution_time' => 30,
 
     'mercure' => [
-        'publisher_jwt' => 'PUBLISHER_TOKEN', # Publisher JWT key
-        'subscriber_jwt' => 'SUB_TOKEN', # Subscriber JWT key
+        'publisher_jwt' => env('MERCURE_JWT_SECRET'), # Publisher JWT key
+        'subscriber_jwt' => env('MERCURE_JWT_SECRET'), # Subscriber JWT key
         'anonymous' => true,
+//        'debug' => true,
+//        'demo' => true,
     ],
 
 ];

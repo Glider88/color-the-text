@@ -25,5 +25,3 @@ RUN \
 RUN mkdir /config/psysh && chown -R ${USER}:${USER} /config/psysh
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-
-#ENTRYPOINT ["php", "artisan", "octane:frankenphp", "--workers", "1", "--watch"]

@@ -1,6 +1,9 @@
 {
     {$CADDY_GLOBAL_OPTIONS}
 
+#    auto_https off
+#    skip_install_trust
+
     admin {$CADDY_SERVER_ADMIN_HOST}:{$CADDY_SERVER_ADMIN_PORT}
 
     frankenphp {

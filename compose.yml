@@ -6,6 +6,7 @@ services:
     user: docker
     ports:
       - "8000:8000"
+#      - "2019:2019"
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
