@@ -6,7 +6,6 @@ services:
     user: docker
     ports:
       - "8000:8000"
-#      - "2019:2019"
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
@@ -17,7 +16,8 @@ services:
       PHP_IDE_CONFIG: "serverName=docker-ctt-php"
     networks: [app]
 #    entrypoint: "tail -f /dev/null"
-    entrypoint: "php artisan octane:frankenphp --caddyfile .docker/php/Caddyfile --workers=1 --watch"
+#    entrypoint: "php artisan octane:frankenphp --caddyfile .docker/php/Caddyfile --workers=1 --watch"
+    entrypoint: "php artisan octane:frankenphp --caddyfile .docker/php/Caddyfile --workers=1 --max-requests=1 --watch"
   composer:
     container_name: ctt-composer
     image: composer
