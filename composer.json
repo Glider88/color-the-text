@@ -16,7 +16,9 @@
         "laravel/tinker": "^2.10.1",
         "lcobucci/jwt": "^5.5",
         "symfony/mercure": "^0.6.5",
-        "tightenco/ziggy": "^2.4"
+        "tightenco/ziggy": "^2.4",
+        "ext-redis": "*",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

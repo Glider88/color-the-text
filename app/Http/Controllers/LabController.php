@@ -1,20 +1,34 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Response;
 
 class LabController extends Controller
 {
     public function count(): View
     {
-        A::$a += 1;
+        global $a;
+        $a += 1;
 
-        return view('count', ['a' => A::$a]);
+        return view('count', ['a' => $a]);
     }
-}
 
-class A
-{
-    public static int $a = 0;
+    public function lab()
+    {
+        return Response::make(
+<<<'HTML'
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Lab</title>
+      <script></script>
+      <style></style>
+  </head>
+  <body></body>
+</html>
+HTML
+        );
+    }
 }

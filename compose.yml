@@ -18,13 +18,6 @@ services:
 #    entrypoint: "tail -f /dev/null"
 #    entrypoint: "php artisan octane:frankenphp --caddyfile .docker/php/Caddyfile --workers=1 --watch"
     entrypoint: "php artisan octane:frankenphp --caddyfile .docker/php/Caddyfile --workers=1 --max-requests=1 --watch"
-  composer:
-    container_name: ctt-composer
-    image: composer
-    user: 1000:1000
-    volumes:
-      - .:/app
-    command: install
   postgres:
     container_name: ctt-postgres
     image: postgres:alpine
@@ -39,7 +32,18 @@ services:
     #          - .docker/postgres/pagila-data.sql:/docker-entrypoint-initdb.d/2-pagila-data.sql
     hostname: db
     networks: [app]
-
+  valkey:
+    container_name: ctt-valkey
+    image: valkey/valkey:8.1.3-alpine
+#    volumes:
+#      - ./conf/valkey.conf:/etc/valkey/valkey.conf
+#       /etc/valkey/valkey.conf- valkey-data:/data
+#    command: valkey-server /etc/valkey/valkey.conf
+    command: valkey-server
+    hostname: redis
+    networks: [app]
+    ports:
+      - "6379:6379"
 networks:
   app:
     driver: bridge

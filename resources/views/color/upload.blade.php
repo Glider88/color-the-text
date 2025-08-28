@@ -17,7 +17,7 @@
 @section('body')
     <form method="POST" action="{{ route('read') }}">
         @csrf
-        <textarea id="content" name="content" rows="4" cols="50"></textarea>
+        <textarea id="content" name="content" rows="20" cols="100"></textarea>
         <button type="submit">Send</button>
     </form>
     @if ($errors->any())
