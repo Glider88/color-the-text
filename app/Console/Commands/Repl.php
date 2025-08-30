@@ -11,6 +11,5 @@ class Repl extends Command
 
     public function handle(): void
     {
-
     }
 }
