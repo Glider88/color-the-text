@@ -7,6 +7,20 @@ use Illuminate\Support\Facades\Response;
 
 class LabController extends Controller
 {
+//    Response::make(
+//<<<'HTML'
+//<html lang="en">
+//  <head>
+//    <meta charset="utf-8">
+//    <title>Lab</title>
+//      <script></script>
+//      <style></style>
+//  </head>
+//  <body></body>
+//</html>
+//HTML
+//    );
+
     public function count(): View
     {
         global $a;
@@ -17,18 +31,6 @@ class LabController extends Controller
 
     public function lab()
     {
-        return Response::make(
-<<<'HTML'
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Lab</title>
-      <script></script>
-      <style></style>
-  </head>
-  <body></body>
-</html>
-HTML
-        );
+        return view('lab');
     }
 }

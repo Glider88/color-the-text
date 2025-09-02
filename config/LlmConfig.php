@@ -17,5 +17,3 @@ readonly class LlmConfig
         $this->responseTimeoutSeconds = (int) env('LLM_RESPONSE_TIMEOUT_SECONDS', 600);
     }
 }
-
-
