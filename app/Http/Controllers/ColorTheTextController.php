@@ -20,13 +20,10 @@ class ColorTheTextController extends Controller
             'content' => ['required', 'max:10000'],
         ]);
 
-        $text = $request->input("content", '');
-        Log::debug('request content: ' . $text);
+        $content = $request->input("content", '');
+        Log::debug('request content: ' . $content);
 
-        ProcessLlm::dispatch($text);
-
-        $content = view('color.content', ['text' => $text])->render();
-        Log::debug('request htmled: ' . $content);
+        ProcessLlm::dispatch($content);
 
         return view('color.read', ['content' => $content]);
     }

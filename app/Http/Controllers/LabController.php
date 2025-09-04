@@ -26,11 +26,11 @@ class LabController extends Controller
         global $a;
         $a += 1;
 
-        return view('count', ['a' => $a]);
+        return view('lab.count', ['a' => $a]);
     }
 
     public function lab()
     {
-        return view('lab');
+        return view('lab.lab');
     }
 }

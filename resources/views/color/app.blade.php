@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-
-    @yield('script')
-    @yield('style')
-
+    @stack('styles')
     <title>@yield('title')</title>
 </head>
 <body>
   @yield('body')
+  @stack('scripts')
 </body>
 </html>
