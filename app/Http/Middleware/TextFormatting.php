@@ -11,10 +11,10 @@ class TextFormatting
     /** @param  Closure(Request): (Response)  $next */
     public function handle(Request $request, Closure $next): Response
     {
-        $content = $request->input("content", '');
+        $content = $request->request->get("content", '');
         if ($content !== '') {
             $content = str_replace('&nbsp;', ' ', $content);
-            $request->replace(['content' => $content]);
+            $request->request->set('content', $content);
         }
 
         return $next($request);

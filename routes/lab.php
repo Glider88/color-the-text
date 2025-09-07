@@ -3,6 +3,5 @@
 use App\Http\Controllers\LabController;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/lab/count', [LabController::class, 'count']);
 Route::get('/lab', [LabController::class, 'lab']);

@@ -4,5 +4,5 @@ namespace App\Contract\SSE;
 
 interface MercureHubInterface
 {
-    public function publish(string $data): void;
+    public function publish(int $topicId, string $data): void;
 }

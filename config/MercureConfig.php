@@ -6,12 +6,12 @@ use Illuminate\Container\Attributes\Singleton;
 readonly class MercureConfig
 {
     public string $url;
-    public string $topic;
+    public string $topicPrefix;
     public string $jwtSecret;
 
     public function __construct() {
         $this->url = env('MERCURE_URL', 'http://127.0.0.1:8000/.well-known/mercure');
-        $this->topic = env('MERCURE_TOPIC', 'color-the-text');
+        $this->topicPrefix = env('MERCURE_TOPIC_PREFIX', 'color-the-text-');
         $this->jwtSecret = env('MERCURE_JWT_SECRET', '');
     }
 }

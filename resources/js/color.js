@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 function splitAndAppend(separator, str) {
     if (! str.includes(separator)) {
         return [str];
@@ -49,7 +51,8 @@ function spanColor(number) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    let content = document.getElementById("content").innerHTML.replaceAll("\\n", "")
+    // let content = document.getElementById("content").innerHTML.replaceAll("\\n", "")
+    let content = document.getElementById("content").innerHTML
     console.log('div.content: ', content)
 
     let sentences = splitSentence(["</p>", ".", "?", "!"], content)
@@ -77,26 +80,65 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    config.articles.forEach(article => {
+        if (article.is_completed) {
+            return
+        }
 
-    // defined in color/read.blade
-    const url = new URL(config.mercure.url)
-    url.searchParams.append('topic', config.mercure.topic)
+        // defined in color/read.blade
+        const url = new URL(config.mercure.url)
+        url.searchParams.append('topic', config.mercure.topic + article.id)
 
-    const eventSource = new EventSource(url)
+        const eventSource = new EventSource(url)
 
-    eventSource.onopen = function () {
-        console.log('eventSource is connected')
-    };
+        const esStr = 'es#' + article.id
 
-    eventSource.onmessage = function (event) {
-        console.log('es get: ', event)
-        processWord(event.data)
-        const newContent = sentences.join('')
-        console.log('newContent: ', newContent)
-        document.getElementById("content").innerHTML = newContent
-    };
+        eventSource.onopen = function () {
+            console.log(esStr + ' is connected')
+        };
 
-    eventSource.onerror = function (error) {
-        console.error('EventSource failed:', error)
-    };
+        let start = false;
+        eventSource.onmessage = function (event) {
+            console.log(esStr + ' get: ', event)
+            if (event.data === 'start') {
+                start = true;
+
+                return
+            }
+
+            if (start && event.data === 'finish') {
+                console.log(esStr + ' completed')
+                const content = document.getElementById("content").innerHTML
+                axios.post(config.finish_url, {
+                    id: article.id,
+                    content: content,
+                })
+                    .then(function (response) {
+                        //handle success
+                        console.log(response);
+                    })
+                    .catch(function (response) {
+                        //handle error
+                        console.log(response);
+                    });
+            }
+
+            if (event.data === 'finish') {
+                console.log(esStr + ' finished')
+                eventSource.close()
+
+                return
+            }
+
+            processWord(event.data)
+            const newContent = sentences.join('')
+            console.log(esStr + ' newContent: ', newContent)
+            document.getElementById("content").innerHTML = newContent
+        };
+
+        eventSource.onerror = function (error) {
+            console.error(esStr + ' failed:', error)
+            eventSource.close();
+        };
+    })
 });

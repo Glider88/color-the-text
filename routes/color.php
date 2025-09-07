@@ -5,11 +5,25 @@ use App\Http\Middleware\TextFormatting;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/upload', [ColorTheTextController::class, 'upload'])->name('upload');
-Route::get('/read', [ColorTheTextController::class, 'read'])->name('read');
+Route::get('/upload', [ColorTheTextController::class, 'upload'])
+    ->name('upload')
+;
 
-Route
-    ::post('/read', [ColorTheTextController::class, 'read'])
+Route::get('/read/{id}', [ColorTheTextController::class, 'read'])
+    ->name('read')
+    ->whereNumber('id')
+;
+
+Route::post('/save', [ColorTheTextController::class, 'save'])
     ->name('save')
     ->middleware(TextFormatting::class)
+;
+
+Route::post('/finish', [ColorTheTextController::class, 'finish'])
+    ->name('finish')
+    ->middleware(TextFormatting::class)
+;
+
+Route::post('/delete', [ColorTheTextController::class, 'delete'])
+    ->name('delete')
 ;

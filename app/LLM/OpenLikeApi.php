@@ -16,8 +16,18 @@ readonly class OpenLikeApi implements OpenLikeApiInterface
         private LoggerInterface $logger,
     ) {}
 
+    /** @inheritDoc */
+    public function models(): array
+    {
+        $response = $this->httpClient->get($this->llmConfig->modelsUrl);
+        $data = json_decode($response->body(), associative: true, flags: JSON_THROW_ON_ERROR);
+        $models = array_column($data['data'] ?? [], 'id');
+
+        return $models;
+    }
+
     /** @return iterable<LlmResponse> */
-    public function send(string $content): iterable
+    public function send(string $content, string $model): iterable
     {
         $message = [
             [
@@ -31,10 +41,10 @@ readonly class OpenLikeApi implements OpenLikeApiInterface
             ->timeout($this->llmConfig->responseTimeoutSeconds)
             ->withOptions(['stream' => true])
             ->post(
-                $this->llmConfig->url,
+                $this->llmConfig->chatUrl,
                 [
-                    "model" => $this->llmConfig->model,
-                    "messages" => json_encode($message, JSON_THROW_ON_ERROR),
+                    "model" => $model,
+                    "messages" => json_encode($message, flags: JSON_THROW_ON_ERROR),
                     "temperature" => $this->llmConfig->temperature,
                     "max_tokens" => -1,
                     "stream" => true,
