@@ -1,6 +1,6 @@
 @push('scripts')
     <script>
-        @if(Route::is('upload'))
+        @if(Route::currentRouteName() === 'upload')
             const dropdownButton = document.getElementById('dropdownButton')
             const dropdownMenu = document.getElementById('dropdownMenu')
             const currentMenu = document.getElementById('currentMenu')
@@ -49,7 +49,7 @@
     </style>
 @endpush
 
-@if(Route::is('upload'))
+@if(Route::currentRouteName() === 'upload')
     <div class="relative">
         <button id="dropdownButton" class="flex items-center space-x-1 py-2 px-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
             <span id="currentMenu">Models</span>

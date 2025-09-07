@@ -1,7 +1,8 @@
 @php
     $cfg = app()->get(\MercureConfig::class);
-    use App\Models\Article;
 @endphp
+
+@use('App\Models\Article')
 
 @push('scripts')
     <script>
@@ -16,7 +17,7 @@
     </script>
 @endpush
 
-@if(Route::is('upload'))
+@if(Route::currentRouteName() ==='upload')
     @push('scripts')
         @vite(['resources/js/editor.js'])
     @endpush
@@ -26,7 +27,7 @@
     @endpush
 @endif
 
-@if(Route::is('upload'))
+@if(Route::currentRouteName() === 'upload')
     <div class="flex-1 p-6 overflow-auto">
         <form id="editor-form" method="POST" action="{{ route('save') }}">
             @csrf

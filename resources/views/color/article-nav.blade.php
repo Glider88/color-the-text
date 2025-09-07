@@ -1,20 +1,15 @@
-@push('scripts')
-    <script>
-        document.querySelectorAll('.article-list-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.article-list-item').forEach(i => {
-                    i.classList.remove('active')
-                });
-                this.classList.add('active')
-            });
-        });
-    </script>
-@endpush
-
 @push('styles')
     <style>
-        .article-list-item.active {
+        .article-list-item {
             background-color: #e5e7eb;
+        }
+
+        .article-list-item:hover {
+            background-color: #c8ffc8;
+        }
+
+        .article-list-item.active {
+            background-color: powderblue;
         }
     </style>
 
@@ -48,12 +43,24 @@
                 @if(! $article->is_completed)
                     <span class="loader"></span>
                 @endif
-                <a href="{{route('read', ['id' => $article->id])}}"
-                   class="article-list-item grow active py-2 px-4 rounded-lg mb-2 cursor-pointer"
-                >
-                    {{ Str::of($article->title)->limit(12) }}
-                </a>
-                @if(! Route::is('upload'))
+
+                @isset($currentArticle)
+                    @if($currentArticle->id === $article->id)
+                        <a href="{{route('read', ['id' => $article->id])}}"
+                           class="article-list-item active grow py-2 px-4 rounded-lg mb-2 cursor-pointer"
+                        >
+                            {{ Str::of($article->title)->limit(12) }}
+                        </a>
+                    @else
+                        <a href="{{route('read', ['id' => $article->id])}}"
+                           class="article-list-item grow py-2 px-4 rounded-lg mb-2 cursor-pointer"
+                        >
+                            {{ Str::of($article->title)->limit(12) }}
+                        </a>
+                    @endif
+                @endisset
+
+                @if(Route::currentRouteName() !== 'upload')
                     <form id="delete-form" method="POST" action="{{ route('delete') }}">
                         @csrf
                         <input name="id" type="hidden" value="{{ $article->id }}">

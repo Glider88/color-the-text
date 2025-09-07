@@ -53,7 +53,7 @@ function spanColor(number) {
 document.addEventListener('DOMContentLoaded', function () {
     // let content = document.getElementById("content").innerHTML.replaceAll("\\n", "")
     let content = document.getElementById("content").innerHTML
-    console.log('div.content: ', content)
+    // console.log('div.content: ', content)
 
     let sentences = splitSentence(["</p>", ".", "?", "!"], content)
     let currentSentence = 0;
@@ -64,17 +64,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const lastSentence = sentences.length - 1
         for (let i = currentSentence; i <= lastSentence; i++) {
             const sentence = sentences[i]
-            console.log('sentence: ', sentence)
-            console.log('word: ', word)
+            // console.log('sentence: ', sentence)
+            // console.log('word: ', word)
             const find = sentence.match(new RegExp(`[\\P{L}](${word})[\\P{L}]`, 'igu'))
-            console.log('find: ', find)
+            // console.log('find: ', find)
             if (find !== null && find.length > 0) {
                 currentSentence = i
                 sentences[i] = sentence.replace(
                     new RegExp(`([\\P{L}])(${word})([\\P{L}])`, 'igu'),
                     spanColor(data.type)
                 )
-                console.log('updated sentence: ', sentences[i])
+                // console.log('updated sentence: ', sentences[i])
                 break
             }
         }
@@ -94,12 +94,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const esStr = 'es#' + article.id
 
         eventSource.onopen = function () {
-            console.log(esStr + ' is connected')
+            // console.log(esStr + ' is connected')
         };
 
         let start = false;
         eventSource.onmessage = function (event) {
-            console.log(esStr + ' get: ', event)
+            // console.log(esStr + ' get: ', event)
             if (event.data === 'start') {
                 start = true;
 
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (start && event.data === 'finish') {
-                console.log(esStr + ' completed')
+                // console.log(esStr + ' completed')
                 const content = document.getElementById("content").innerHTML
                 axios.post(config.finish_url, {
                     id: article.id,
@@ -124,15 +124,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (event.data === 'finish') {
-                console.log(esStr + ' finished')
+                // console.log(esStr + ' finished')
                 eventSource.close()
 
                 return
             }
 
             processWord(event.data)
-            const newContent = sentences.join('')
-            console.log(esStr + ' newContent: ', newContent)
+            // const newContent = sentences.join('')
+            // console.log(esStr + ' newContent: ', newContent)
             document.getElementById("content").innerHTML = newContent
         };
 
