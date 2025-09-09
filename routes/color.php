@@ -27,3 +27,7 @@ Route::post('/finish', [ColorTheTextController::class, 'finish'])
 Route::post('/delete', [ColorTheTextController::class, 'delete'])
     ->name('delete')
 ;
+
+Route::get('/config', [ColorTheTextController::class, 'config'])
+    ->name('config')
+;

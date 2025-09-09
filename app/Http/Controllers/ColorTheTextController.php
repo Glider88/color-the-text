@@ -10,6 +10,7 @@ use Illuminate\Container\Attributes\Give;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Illuminate\Redis\RedisManager;
 use Illuminate\Support\Facades\Log;
@@ -28,7 +29,7 @@ class ColorTheTextController extends Controller
         $models = $this->api->models();
         $articles = Article::orderBy('updated_at', 'desc')->get();
 
-        return view('color.app', [
+        return view('app-upload', [
             'articles' => $articles,
             'models' => $models,
         ]);
@@ -63,16 +64,13 @@ class ColorTheTextController extends Controller
             return redirect()->route('upload');
         }
 
-        $articles = Article::orderBy('updated_at', 'desc')->get();
-
         if (! $article->is_completed) {
             Log::debug('read dispatch sse: ' . $article->id);
             ProcessSse::dispatch($article->id);
         }
 
-        return view('color.app', [
-            'currentArticle' => $article,
-            'articles' => $articles,
+        return view('app-read', [
+            'currentArticleId' => $id,
         ]);
     }
 
@@ -88,7 +86,9 @@ class ColorTheTextController extends Controller
         $article->content = $final;
         $article->is_completed = true;
         $article->save();
+
         $this->redis->del($this->mercureConfig->topicPrefix . $article->id);
+
         Log::debug('finished: ' . $article->id);
         Log::debug('clear: ' . $this->mercureConfig->topicPrefix . $article->id);
 
@@ -106,5 +106,20 @@ class ColorTheTextController extends Controller
         Log::debug('deleted : ' . $article->id);
 
         return redirect()->route('upload');
+    }
+
+    public function config(): JsonResource
+    {
+        $result = [];
+        $articles = Article::where('is_completed', false)->get();
+        foreach ($articles as $article) {
+            $result[] = [
+                'id' => $article->id,
+                'sse_url' => $this->mercureConfig->url,
+                'topic' => $this->mercureConfig->topicPrefix . $article->id,
+            ];
+        }
+
+        return JsonResource::make($result);
     }
 }
