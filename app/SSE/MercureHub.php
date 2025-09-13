@@ -27,9 +27,7 @@ class MercureHub implements MercureHubInterface
             $this->hub = new Hub($this->mercureConfig->url, new StaticTokenProvider($token));
         }
 
-        $prefix = $this->mercureConfig->topicPrefix;
-
-        $update = new Update($prefix . $topicId, $data);
+        $update = new Update($this->mercureConfig->topicPrefix . $topicId, $data);
         $this->hub->publish($update);
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Jobs;
 
+use App\Contract\LLM\LlmResultStorageInterface;
 use App\Contract\LLM\OpenLikeApiInterface;
 use App\Contract\LLM\TaskInterface;
 use App\Helper\IteratorHelper;
+use App\LLM\LlmResultStorageRedis;
 use App\LLM\LlmResponse;
 use App\LLM\OpenLikeApi;
 use App\LLM\SubjectPredicateTask;
@@ -12,8 +14,6 @@ use App\Models\Article;
 use Illuminate\Container\Attributes\Give;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Redis\RedisManager;
-use MercureConfig;
 use Psr\Log\LoggerInterface;
 
 class ProcessLlm implements ShouldQueue
@@ -29,11 +29,10 @@ class ProcessLlm implements ShouldQueue
     }
 
     public function handle(
-        #[Give(OpenLikeApi::class)] OpenLikeApiInterface $api,
-        #[Give(SubjectPredicateTask::class)] TaskInterface $llmTask,
-        LoggerInterface $logger,
-        RedisManager $redis,
-        MercureConfig $mercureConfig,
+        #[Give(OpenLikeApi::class)] OpenLikeApiInterface                $api,
+        #[Give(SubjectPredicateTask::class)] TaskInterface              $llmTask,
+        #[Give(LlmResultStorageRedis::class)] LlmResultStorageInterface $storage,
+        LoggerInterface                                                 $logger,
     ): void
     {
         $logger->debug('llm job start');
@@ -42,44 +41,17 @@ class ProcessLlm implements ShouldQueue
         $content = $llmTask->appendToText($article->content);
         $response = $api->send($content, $article->model);
 
-        $redis->rpush($mercureConfig->topicPrefix . $this->articleId, 'start');
+        $storage->start($article);
 
         $llmPieces = IteratorHelper::map($response, static fn(LlmResponse $r) => $r->content());
         $words = IteratorHelper::lines($llmPieces);
-        $fixedWords = $this->skipThinking($words);
+        $fixedWords = IteratorHelper::skipThinking($words);
 
         foreach ($fixedWords as $word) {
-            $result = json_encode(
-                $llmTask->processResponse($word),
-                JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
-            );
-            $logger->debug('result: ' . $result);
-            $redis->rpush($mercureConfig->topicPrefix . $this->articleId, $result);
+            $storage->put($article, $word);
         }
 
-        $redis->rpush($mercureConfig->topicPrefix . $this->articleId, 'finish');
+        $storage->finish($article);
         $logger->debug('llm job end');
-    }
-
-    private function skipThinking(iterable $iterator): iterable
-    {
-        $skip = false;
-        foreach ($iterator as $value) {
-            if ($value === '<think>') {
-                $skip = true;
-                continue;
-            }
-
-            if ($value === '</think>') {
-                $skip = false;
-                continue;
-            }
-
-            if ($skip) {
-                continue;
-            }
-
-            yield $value;
-        }
     }
 }

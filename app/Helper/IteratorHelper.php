@@ -53,4 +53,30 @@ readonly class IteratorHelper
             yield $stream->read($chunkSize);
         }
     }
+
+    /**
+     * @param iterable<string> $iterator
+     * @return iterable<string>
+     */
+    public static function skipThinking(iterable $iterator): iterable
+    {
+        $skip = false;
+        foreach ($iterator as $value) {
+            if ($value === '<think>') {
+                $skip = true;
+                continue;
+            }
+
+            if ($value === '</think>') {
+                $skip = false;
+                continue;
+            }
+
+            if ($skip) {
+                continue;
+            }
+
+            yield $value;
+        }
+    }
 }

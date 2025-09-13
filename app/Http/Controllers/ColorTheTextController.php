@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Contract\LLM\LlmResultStorageInterface;
 use App\Contract\LLM\OpenLikeApiInterface;
 use App\Jobs\ProcessSse;
+use App\LLM\LlmResultStorageRedis;
 use App\LLM\OpenLikeApi;
 use App\Models\Article;
 use Illuminate\Container\Attributes\Give;
@@ -12,7 +14,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
-use Illuminate\Redis\RedisManager;
 use Illuminate\Support\Facades\Log;
 use MercureConfig;
 
@@ -20,7 +21,7 @@ class ColorTheTextController extends Controller
 {
     public function __construct(
         #[Give(OpenLikeApi::class)] private readonly OpenLikeApiInterface $api,
-        private readonly RedisManager $redis,
+        #[Give(LlmResultStorageRedis::class)] private readonly LlmResultStorageInterface $storage,
         private readonly MercureConfig $mercureConfig,
     ) {}
 
@@ -87,10 +88,7 @@ class ColorTheTextController extends Controller
         $article->is_completed = true;
         $article->save();
 
-        $this->redis->del($this->mercureConfig->topicPrefix . $article->id);
-
-        Log::debug('finished: ' . $article->id);
-        Log::debug('clear: ' . $this->mercureConfig->topicPrefix . $article->id);
+        $this->storage->deleteStorage($article);
 
         return response()->noContent();
     }
