@@ -45,10 +45,11 @@ class ProcessLlm implements ShouldQueue
 
         $llmPieces = IteratorHelper::map($response, static fn(LlmResponse $r) => $r->content());
         $words = IteratorHelper::lines($llmPieces);
-        $fixedWords = IteratorHelper::skipThinking($words);
+        $pureWords = IteratorHelper::skipThinking($words);
 
-        foreach ($fixedWords as $word) {
-            $storage->put($article, $word);
+        foreach ($pureWords as $word) {
+            $wordAndType = $llmTask->processResponse($word);
+            $storage->put($article, $wordAndType);
         }
 
         $storage->finish($article);

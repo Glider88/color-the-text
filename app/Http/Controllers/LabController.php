@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Response;
 
 class LabController extends Controller
 {
-//    Response::make(
+//    \Illuminate\Support\Facades\Response::make(
 //<<<'HTML'
 //<html lang="en">
 //  <head>
