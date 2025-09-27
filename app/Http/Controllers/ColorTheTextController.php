@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use MercureConfig;
+use Config\MercureConfig;
 
 class ColorTheTextController extends Controller
 {

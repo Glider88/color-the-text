@@ -5,7 +5,7 @@ namespace App\LLM;
 use App\Contract\LLM\OpenLikeApiInterface;
 use App\Helper\IteratorHelper;
 use Illuminate\Http\Client\Factory;
-use LlmConfig;
+use Config\LlmConfig;
 use Psr\Log\LoggerInterface;
 
 readonly class OpenLikeApi implements OpenLikeApiInterface

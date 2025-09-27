@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
 
+namespace Config;
+
 use Illuminate\Container\Attributes\Singleton;
+use Uri;
 
 #[Singleton]
 readonly class LlmConfig

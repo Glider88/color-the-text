@@ -5,7 +5,7 @@ namespace App\LLM;
 use App\Contract\LLM\LlmResultStorageInterface;
 use App\Models\Article;
 use Illuminate\Redis\RedisManager;
-use MercureConfig;
+use Config\MercureConfig;
 use Psr\Log\LoggerInterface;
 
 readonly class LlmResultStorageRedis implements LlmResultStorageInterface

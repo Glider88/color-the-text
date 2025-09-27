@@ -5,7 +5,7 @@ namespace App\SSE;
 use App\Contract\SSE\JwtTokenInterface;
 use App\Contract\SSE\MercureHubInterface;
 use Illuminate\Container\Attributes\Give;
-use MercureConfig;
+use Config\MercureConfig;
 use Symfony\Component\Mercure\Hub;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Jwt\StaticTokenProvider;

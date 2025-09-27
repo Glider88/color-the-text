@@ -6,7 +6,7 @@ use App\Contract\SSE\JwtTokenInterface;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
-use MercureConfig;
+use Config\MercureConfig;
 
 class JwtToken implements JwtTokenInterface
 {
