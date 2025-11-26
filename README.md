@@ -32,5 +32,6 @@ npm run "dev"
 I used **LM Studio** and **google/gemma-3-12b**.
 In the **Developer** tab, in **Settings** enable **Serve on Local Network** and set port to **1234**
 
+## Front:
 Go to http://127.0.0.1:8000/upload, add Title, Text and pick llm model.
 
