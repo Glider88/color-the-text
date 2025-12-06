@@ -3,7 +3,7 @@
 @endpush
 
 @push('styles')
-    @vite(['resources/css/models.scss'])
+    @vite(['resources/css/models.css'])
 @endpush
 
 <div class="relative">

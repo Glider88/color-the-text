@@ -1,5 +1,5 @@
 @push('styles')
-    @vite(['resources/css/navigation.scss'])
+    @vite(['resources/css/navigation.css'])
 @endpush
 
 <div class="w-64 bg-white border-r border-gray-200 flex flex-col">
