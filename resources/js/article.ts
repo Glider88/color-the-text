@@ -123,6 +123,7 @@ axios
                 if (event.data === 'finish') {
                     console.log(esStr + ' finished')
                     eventSource.close()
+                    document.getElementById('loader-article-' + item.id)?.remove()
 
                     return
                 }

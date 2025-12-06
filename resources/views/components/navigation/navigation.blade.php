@@ -13,7 +13,7 @@
         @foreach($articles as $article)
             <div class="w-full h-12 content-center flex">
                 @if (! $article->is_completed)
-                    <span class="loader"></span>
+                    <span id="loader-article-{{ $article->id }}" class="loader"></span>
                 @endif
 
                 <a href="{{ route('read', ['id' => $article->id]) }}"
