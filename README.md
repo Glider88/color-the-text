@@ -1,37 +1,51 @@
 # Color the text
 
-Main idea - colorize text like in the IDE using the color scheme, now select and color only the subjects and predicates in the text. Works for russian text.
+Just playing with Laravel, Laravel Octane, FrankenPHP with working mode, SSE and LLM.
 
-## Preparation:
+Main idea - colorize text like in the IDE using the color scheme, now select and color only the subjects and predicates in the text.
+
+Works for russian text.
+
+![](/storage/images/screenshot.png)
+
+### Start:
+
+Preparation:
 ```shell
 npm install
 cp .env.example .env
 ```
 
-## Start docker
-
-First time:
+LLM:
+I use **LM Studio**.
+In the **Developer** tab, in **Settings** enable **Serve on Local Network** and set port to **1234**
 ```shell
-bin/re
+sudo ufw allow 1234/tcp
 ```
 
-Next times:
+Start docker:
 ```shell
-bin/up
+bin/re  # first time
 ```
-
-## Then:
+```shell
+bin/up  # next times
+```
+Then:
+```shell
+bin/art key:generate
+```
 ```shell
 bin/art migrate
+```
+```shell
 bin/art queue:work redis -v --queue=llm
+```
+```shell
 bin/art queue:work redis -v --queue=sse
+```
+```shell
 npm run "dev"
 ```
 
-## LLM:
-I used **LM Studio** and **google/gemma-3-12b**.
-In the **Developer** tab, in **Settings** enable **Serve on Local Network** and set port to **1234**
-
-## Front:
-Go to http://127.0.0.1:8000/upload, add Title, Text and pick llm model.
+Front: http://127.0.0.1:8000/upload
 
