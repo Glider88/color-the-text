@@ -32,7 +32,7 @@ class ProcessSse implements ShouldQueue
     {
         $logger->debug('sse job start');
 
-        $article = Article::find($this->articleId);
+        $article = Article::findOrFail($this->articleId);
         if ($storage->storageNotExist($article)) {
             ProcessLlm::dispatch($article->id);
         }

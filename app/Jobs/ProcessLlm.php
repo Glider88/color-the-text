@@ -36,7 +36,7 @@ class ProcessLlm implements ShouldQueue
     ): void
     {
         $logger->debug('llm job start');
-        $article = Article::find($this->articleId);
+        $article = Article::findOrFail($this->articleId);
 
         $content = $llmTask->appendToText($article->content);
         $response = $api->send($content, $article->model);

@@ -20,8 +20,12 @@ use Config\MercureConfig;
 class ColorTheTextController extends Controller
 {
     public function __construct(
-        #[Give(OpenLikeApi::class)] private readonly OpenLikeApiInterface $api,
-        #[Give(LlmResultStorageRedis::class)] private readonly LlmResultStorageInterface $storage,
+        #[Give(OpenLikeApi::class)]
+        private readonly OpenLikeApiInterface $api,
+
+        #[Give(LlmResultStorageRedis::class)]
+        private readonly LlmResultStorageInterface $storage,
+
         private readonly MercureConfig $mercureConfig,
     ) {}
 
@@ -39,13 +43,18 @@ class ColorTheTextController extends Controller
     public function save(Request $request): RedirectResponse
     {
         $request->validate([
-            'title' => ['required'],
-            'content' => ['required', 'max:10000'],
-            'model' => ['required'],
+            'title' => ['required', 'string'],
+            'content' => ['required', 'string', 'max:10000'],
+            'model' => ['required', 'string'],
         ]);
 
+        /** @var string $title */
         $title = $request->input("title", '');
+
+        /** @var string $content */
         $content = $request->input("content", '');
+
+        /** @var string $model */
         $model = $request->input("model", '');
         Log::debug('request content: ' . $content);
 
@@ -82,8 +91,8 @@ class ColorTheTextController extends Controller
             'content' => ['required', 'max:10000'],
         ]);
 
-        $article = Article::find($request->request->get('id'));
-        $final = $request->request->get('content');
+        $article = Article::findOrFail($request->request->get('id'));
+        $final = (string) $request->request->get('content');
         $article->content = $final;
         $article->is_completed = true;
         $article->save();
@@ -99,7 +108,7 @@ class ColorTheTextController extends Controller
             'id' => ['required', 'int'],
         ]);
 
-        $article = Article::find($request->request->get('id'));
+        $article = Article::findOrFail($request->request->get('id'));
         $article->delete();
         Log::debug('deleted : ' . $article->id);
 

@@ -15,6 +15,7 @@ TASK;
         return $task . $text;
     }
 
+    /** @inheritDoc */
     public function processResponse(string $word): ?array
     {
         $isOk = preg_match('/^(\d+)\s+(.*)$/u', $word, $matches);

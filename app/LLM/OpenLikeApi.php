@@ -6,6 +6,7 @@ use App\Contract\LLM\OpenLikeApiInterface;
 use App\Helper\IteratorHelper;
 use Illuminate\Http\Client\Factory;
 use Config\LlmConfig;
+use Illuminate\Http\Client\Response;
 use Psr\Log\LoggerInterface;
 
 readonly class OpenLikeApi implements OpenLikeApiInterface
@@ -19,7 +20,10 @@ readonly class OpenLikeApi implements OpenLikeApiInterface
     /** @inheritDoc */
     public function models(): array
     {
+        /** @var Response $response */
         $response = $this->httpClient->get($this->llmConfig->modelsUrl);
+
+        /** @var array<string, array<string, string>> $data */
         $data = json_decode($response->body(), associative: true, flags: JSON_THROW_ON_ERROR);
         $models = array_column($data['data'] ?? [], 'id');
 
@@ -36,6 +40,7 @@ readonly class OpenLikeApi implements OpenLikeApiInterface
             ],
         ];
 
+        /** @var Response $response */
         $response = $this
             ->httpClient
             ->timeout($this->llmConfig->responseTimeoutSeconds)

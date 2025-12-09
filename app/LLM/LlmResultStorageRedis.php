@@ -29,14 +29,13 @@ readonly class LlmResultStorageRedis implements LlmResultStorageInterface
         $this->logger->debug("putted in storage for Article#$article->id: $result");
     }
 
-    /** @return array<string> */
+    /** @return list<string> */
     public function fetch(Article $article, int $offset = 0): array
     {
-        return $this->redis->lrange(
-            $this->key($article),
-            start: $offset,
-            end: -1
-        );
+        /** @var list<string> $results */
+        $results = $this->redis->lrange($this->key($article), start: $offset, end: -1);
+
+        return $results;
     }
 
     public function finish(Article $article): void
@@ -58,7 +57,9 @@ readonly class LlmResultStorageRedis implements LlmResultStorageInterface
 
     private function key(Article $article): string
     {
-        if ($article->id === null) {
+        /** @var int|null $id */
+        $id = $article->id;
+        if ($id === null) {
             throw new \InvalidArgumentException("Article '$article->title' id is null");
         }
 

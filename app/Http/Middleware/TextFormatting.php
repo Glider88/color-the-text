@@ -11,8 +11,8 @@ class TextFormatting
     /** @param  Closure(Request): (Response)  $next */
     public function handle(Request $request, Closure $next): Response
     {
-        $content = $request->request->get("content", '');
-        if ($content !== '') {
+        if ($request->request->has('content')) {
+            $content = (string) $request->request->get("content", '');
             $content = str_replace('&nbsp;', ' ', $content);
             $request->request->set('content', $content);
         }

@@ -4,6 +4,7 @@ namespace App\LLM;
 
 readonly class LlmResponse
 {
+    /** @param LlmResponseLineArray $response */
     public function __construct(
         private array $response
     ) {}
@@ -22,6 +23,8 @@ readonly class LlmResponse
         }
 
         $llmResponseLine = substr($llmResponseLine, $start, $end - $start + 1);
+
+        /** @var LlmResponseLineArray $response */
         $response = json_decode($llmResponseLine, associative: true, flags: JSON_THROW_ON_ERROR);
 
 

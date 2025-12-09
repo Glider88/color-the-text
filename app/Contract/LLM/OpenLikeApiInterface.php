@@ -6,7 +6,7 @@ use App\LLM\LlmResponse;
 
 interface OpenLikeApiInterface
 {
-    /** @return array<string> */
+    /** @return list<string> */
     public function models(): array;
 
     /** @return iterable<LlmResponse> */

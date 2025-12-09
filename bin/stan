@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+arg="$1"
+
+if [[ $# -eq 0 ]] ; then
+    docker compose exec --user docker php sh -c "./vendor/bin/phpstan analyse"
+else
+    for p in $(find -iname "*$arg*" | grep '.php'); do
+        docker compose exec --user docker php sh -c "./vendor/bin/phpstan analyse $p"
+    done
+fi

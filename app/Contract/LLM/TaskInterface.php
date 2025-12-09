@@ -6,5 +6,6 @@ interface TaskInterface
 {
     public function appendToText(string $text): string;
 
+    /** @return null | array<string, string|int> */
     public function processResponse(string $word): ?array;
 }

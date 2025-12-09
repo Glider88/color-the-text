@@ -9,6 +9,8 @@ readonly class MercureConfig
 {
     public string $url;
     public string $topicPrefix;
+
+    /** @var non-empty-string */
     public string $jwtSecret;
 
     public function __construct() {

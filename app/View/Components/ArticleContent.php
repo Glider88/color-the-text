@@ -14,7 +14,7 @@ class ArticleContent extends Component
 
     public function render(): View
     {
-        $currentArticle = Article::find($this->currentArticleId);
+        $currentArticle = Article::findOrFail($this->currentArticleId);
 
         return view('components.article-content', [
             'content' => $currentArticle->content,

@@ -21,6 +21,7 @@
     "require-dev": {
         "roave/security-advisories": "dev-latest",
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.8",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.18",
         "laravel/sail": "^1.41",

@@ -14,7 +14,7 @@ class ModelPicked extends Component
 
     public function render(): View
     {
-        $currentArticle = Article::find($this->currentArticleId);
+        $currentArticle = Article::findOrFail($this->currentArticleId);
 
         return view('components.model-picked', [
             'currentModel' => $currentArticle->model,
