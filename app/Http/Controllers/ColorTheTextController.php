@@ -82,8 +82,8 @@ class ColorTheTextController extends Controller
             'content' => ['required', 'max:10000'],
         ]);
 
-        $article = Article::find($request->get('id'));
-        $final = $request->get('content');
+        $article = Article::find($request->request->get('id'));
+        $final = $request->request->get('content');
         $article->content = $final;
         $article->is_completed = true;
         $article->save();
@@ -99,7 +99,7 @@ class ColorTheTextController extends Controller
             'id' => ['required', 'int'],
         ]);
 
-        $article = Article::find($request->get('id'));
+        $article = Article::find($request->request->get('id'));
         $article->delete();
         Log::debug('deleted : ' . $article->id);
 
